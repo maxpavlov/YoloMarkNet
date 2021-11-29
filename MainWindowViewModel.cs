@@ -28,49 +28,6 @@ namespace YoloMarkNet
         }
     }
 
-    public class BoundingBox : Notifier
-    {
-        public BoundingBox(Rect rect, Class c) { this.rect = rect; Class = c; }
-        private Rect rect;
-        public Class Class { get; }
-        public double X
-        {
-            get { return rect.X; }
-            set
-            {
-                rect.X = value;
-                NotifyPropertyChanged();
-            }
-        }
-        public double Y
-        {
-            get { return rect.Y; }
-            set
-            {
-                rect.Y = value;
-                NotifyPropertyChanged();
-            }
-        }
-        public double Width
-        {
-            get { return rect.Width; }
-            set
-            {
-                rect.Width = value;
-                NotifyPropertyChanged();
-            }
-        }
-        public double Height
-        {
-            get { return rect.Height; }
-            set
-            {
-                rect.Height = value;
-                NotifyPropertyChanged();
-            }
-        }
-    }
-
     public class Class
     {
         public Class(string desc, Brush color)
@@ -105,7 +62,7 @@ namespace YoloMarkNet
 
         public IList<Image> Images { get; }
 
-        public IList<Brush> Colors { get; } 
+        public IList<Brush> Colors { get; }
 
         public ObservableCollection<BoundingBox> BoundingBoxes { get; } = new ObservableCollection<BoundingBox>();
 
@@ -115,6 +72,7 @@ namespace YoloMarkNet
             get { return Images.FirstOrDefault(f => f.IsSelected); }
             set
             {
+                if (value == null) return;
                 SelectedImageSource = null;
                 foreach (var image in Images)
                 {
@@ -152,19 +110,18 @@ namespace YoloMarkNet
         
         public ImageSource SelectedImageSource
         {
-            get { return _selectedImageSource; }
+            get => _selectedImageSource;
             set { _selectedImageSource = value; NotifyPropertyChanged(); }
         }
         
         public Class SelectedClass
         {
-            get { return _selectedClass; }
+            get => _selectedClass;
             set { _selectedClass = value; NotifyPropertyChanged(); }
         }
         
         public MainWindowViewModel()
         {
-
             System.IO.Directory.CreateDirectory("data\\img");
 
             //Fix design time errors
